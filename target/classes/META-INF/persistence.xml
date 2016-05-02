@@ -13,7 +13,7 @@
             <property name="javax.persistence.jdbc.password" value="1234"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@//localhost:1521/orcl"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle12cDialect"/>
-            <property name="hibernate.hbm2ddl.auto" value="create"/>
+            <!--<property name="hibernate.hbm2ddl.auto" value="create"/>-->
 
         </properties>
 

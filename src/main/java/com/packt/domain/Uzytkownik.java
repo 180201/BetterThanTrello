@@ -7,7 +7,6 @@ import java.sql.Date;
  * Created by WP on 17.04.2016.
  */
 @Entity
-
 public class Uzytkownik {// nie mozna utworzyc encji o nazwie User
     @Id
     @GeneratedValue
@@ -100,5 +99,19 @@ public class Uzytkownik {// nie mozna utworzyc encji o nazwie User
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "Uzytkownik{" +
+                "id=" + id +
+                ", creatingDate=" + creatingDate +
+                ", modificationDate=" + modificationDate +
+                ", idCreatingUser=" + idCreatingUser +
+                ", idModUser=" + idModUser +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

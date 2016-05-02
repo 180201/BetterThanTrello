@@ -8,8 +8,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
+import java.util.List;
 
-@Repository
+//@Repository
 public class UserRepositoryImpl implements UserRepository
 {
     private static EntityManagerFactory entityManagerFactory;
@@ -37,14 +38,22 @@ public class UserRepositoryImpl implements UserRepository
 
 
     @Override
-    public Uzytkownik read(long userId)
+    public Uzytkownik read(String Login)
     {
         // zapytanie jpql
 
         //noinspection JpaQlInspection
-        TypedQuery<Uzytkownik> query = entityManager.createQuery("SELECT u FROM Uzytkownik u", Uzytkownik.class);// key sensitive przy zapytaniu !!!
-      //  query.setParameter(1,"aaa");
-        return query.getSingleResult();
+        Uzytkownik uzytkownik=new Uzytkownik();
+        TypedQuery<Uzytkownik> query = entityManager.createQuery("SELECT u FROM Uzytkownik u where u.name=:Login ", Uzytkownik.class);// key sensitive przy zapytaniu !!!
+      query.setParameter("Login",Login);
+try{
+    uzytkownik=query.getSingleResult();
+}catch (Exception e)
+{
+    //e.printStackTrace();
+    uzytkownik = null;
+}
+        return uzytkownik;
     }
 
     @Override

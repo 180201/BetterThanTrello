@@ -7,7 +7,7 @@ import com.packt.domain.Uzytkownik;
  */
 public interface UserRepository {
     void create(Uzytkownik user);
-    Uzytkownik read(long userId);
+    Uzytkownik read(String Login);
     void update(long userId,Uzytkownik user);
     void delete(long UserId);
 }

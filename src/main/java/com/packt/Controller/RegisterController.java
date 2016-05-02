@@ -4,40 +4,56 @@ import com.packt.domain.Uzytkownik;
 import com.packt.domain.repository.impl.UserRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Map;
 
 /**
  * Created by WP on 16.04.2016.
  */
 
 @Controller
-@RequestMapping(value = "/register", method = RequestMethod.GET)
-
 public class RegisterController {
 
-    @Autowired
+  //  @Autowired
     UserRepositoryImpl userRepository;
 
-    public String Register() {
+    @RequestMapping(value = "/register", method = RequestMethod.GET)
+    public String Register()
+    {
+
+
         return "Register";
     }
-
-    public void processAddNewUser() throws ParseException {
-
+  @RequestMapping(value="register/add" , method = RequestMethod.POST)
+  public String checkUser (@ModelAttribute("user") @Valid Uzytkownik user, BindingResult result,
+                           HttpServletRequest request,Model model)
+  {
         userRepository=new UserRepositoryImpl();
 
-        // utworzenie nowego uzytkownika i wrzucenie go do bazy
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-        String strDate = "2011-12-31 00:00:00";
-        java.util.Date date = sdf.parse(strDate);
-        java.sql.Date sqlDate = new Date(date.getTime());
-        Uzytkownik uzytkownik1 =new Uzytkownik(sqlDate,sqlDate,2,3,"aahggha","gbubugg","ffhhhhf");
+  if(!user.getPassword().equals(request.getParameter("confirm_password")))
+    {
+      model.addAttribute("error","Passwords are different");
+        return "redirect:/register";
+    }
+  if(userRepository.read(user.getName())!=null)
+      {
+          model.addAttribute("error","user with that login already exists");
+          return "redirect:/register";
 
-        userRepository.create(uzytkownik1);
+      }
+      //System.out.println(student.toString());
+     //  System.out.println(confirm_password);
+       // userRepository.read(student.getName())
+        userRepository.create(user);
+        return "index" ;
+
     }
 }
