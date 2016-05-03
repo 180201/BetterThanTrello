@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="BetterThanTrello:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="BetterThanTrello-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="BetterThanTrello:war exploded" />
+    </root>
+  </artifact>
+</component>
