@@ -1,13 +1,13 @@
 package com.packt.domain.repository.impl;
 
-import com.packt.domain.Trollo_users;
+import com.packt.domain.TrolloUsers;
 
 /**
  * Created by WP on 17.04.2016.
  */
 public interface UserRepository {
-    void create(Trollo_users user);
-    Trollo_users read(String Login);
-    void update(long userId,Trollo_users user);
+    void create(TrolloUsers user);
+    TrolloUsers read(String Login);
+    void update(long userId,TrolloUsers user);
     void delete(long UserId);
 }

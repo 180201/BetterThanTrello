@@ -1,6 +1,6 @@
 package com.packt.Controller;
 
-import com.packt.domain.Trollo_users;
+import com.packt.domain.TrolloUsers;
 import com.packt.domain.repository.impl.UserRepositoryImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -25,13 +25,13 @@ public class LoginController {
     }
 
     @RequestMapping(value="login/chceck" , method = RequestMethod.POST)
-            public String checkUser (@ModelAttribute("user") @Valid Trollo_users user, BindingResult result, HttpServletRequest request)
+            public String checkUser (@ModelAttribute("user") @Valid TrolloUsers user, BindingResult result, HttpServletRequest request)
              {
                  userRepository = new UserRepositoryImpl();
                  boolean isValid;
                  System.out.println(user.getName()+" "+ user.getPassword());
 
-                 Trollo_users uzytkownik=  userRepository.read(user.getName());
+                 TrolloUsers uzytkownik=  userRepository.read(user.getName());
                  System.out.println(uzytkownik.getName()+" "+uzytkownik.getPassword());
               if(uzytkownik==null||(uzytkownik.getPassword().equals(user.getPassword())!=true))
               {

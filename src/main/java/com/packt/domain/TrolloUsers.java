@@ -2,14 +2,18 @@ package com.packt.domain;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by WP on 17.04.2016.
  */
 @Entity
-public class Trollo_users {// nie mozna utworzyc encji o nazwie User
+@Table(name="Trollo_Users")
+public class TrolloUsers {// nie mozna utworzyc encji o nazwie User
     @Id
     @GeneratedValue
+    @Column(name="ID")
     private long id;
 
     @Column(name = "CREATING_DATE")
@@ -30,7 +34,10 @@ public class Trollo_users {// nie mozna utworzyc encji o nazwie User
     @Column(length = 150)
     private String email;
 
-    public Trollo_users(Date creatingDate, Date modificationDate, int idCreatingUser, int idModUser, String name, String password, String email) {
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trolloUsers")
+    private Set<TrolloBoard> trolloBoards = new HashSet<TrolloBoard>(0);
+
+    public TrolloUsers(Date creatingDate, Date modificationDate, int idCreatingUser, int idModUser, String name, String password, String email) {
         this.creatingDate = creatingDate;
         this.modificationDate = modificationDate;
         this.idCreatingUser = idCreatingUser;
@@ -40,7 +47,7 @@ public class Trollo_users {// nie mozna utworzyc encji o nazwie User
         this.email = email;
     }
 
-    public Trollo_users() {
+    public TrolloUsers() {
     }
 
     public long getId() {
@@ -106,6 +113,14 @@ public class Trollo_users {// nie mozna utworzyc encji o nazwie User
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Set<TrolloBoard> getTrolloBoards() {
+        return trolloBoards;
+    }
+
+    public void setTrolloBoards(Set<TrolloBoard> trolloBoards) {
+        this.trolloBoards = trolloBoards;
     }
 
     @Override

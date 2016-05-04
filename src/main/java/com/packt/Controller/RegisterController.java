@@ -1,6 +1,6 @@
 package com.packt.Controller;
 
-import com.packt.domain.Trollo_users;
+import com.packt.domain.TrolloUsers;
 import com.packt.domain.repository.impl.UserRepositoryImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,7 +32,7 @@ public class RegisterController {
         return "Register";
     }
   @RequestMapping(value="register/add" , method = RequestMethod.POST)
-  public String checkUser (@ModelAttribute("user") @Valid Trollo_users user, BindingResult result,
+  public String checkUser (@ModelAttribute("user") @Valid TrolloUsers user, BindingResult result,
                            HttpServletRequest request,Model model)
   {
 
