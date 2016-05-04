@@ -1,7 +1,7 @@
 package com.packt.domain.repository.impl;
 
 
-import com.packt.domain.Uzytkownik;
+import com.packt.domain.Trollo_users;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -30,7 +30,7 @@ public class UserRepositoryImpl implements UserRepository
     }
 
     @Override
-    public void create(Uzytkownik user) {
+    public void create(Trollo_users user) {
         entityManager.getTransaction().begin();
         entityManager.persist(user);
         entityManager.getTransaction().commit();
@@ -38,26 +38,26 @@ public class UserRepositoryImpl implements UserRepository
 
 
     @Override
-    public Uzytkownik read(String Login)
+    public Trollo_users read(String Login)
     {
         // zapytanie jpql
 
         //noinspection JpaQlInspection
-        Uzytkownik uzytkownik=new Uzytkownik();
-        TypedQuery<Uzytkownik> query = entityManager.createQuery("SELECT u FROM Uzytkownik u where u.name=:Login ", Uzytkownik.class);// key sensitive przy zapytaniu !!!
+        Trollo_users trolloUsers=new Trollo_users();
+        TypedQuery<Trollo_users> query = entityManager.createQuery("SELECT u FROM Trollo_users u where u.name=:Login ", Trollo_users.class);// key sensitive przy zapytaniu !!!
         query.setParameter("Login",Login);
         try{
-            uzytkownik=query.getSingleResult();
+            trolloUsers=query.getSingleResult();
         }catch (Exception e)
         {
             //e.printStackTrace();
-            uzytkownik = null;
+            trolloUsers = null;
         }
-        return uzytkownik;
+        return trolloUsers;
     }
 
     @Override
-    public void update(long userId, Uzytkownik user) {
+    public void update(long userId, Trollo_users user) {
 
     }
 

@@ -7,14 +7,21 @@ import java.sql.Date;
  * Created by WP on 17.04.2016.
  */
 @Entity
-public class Uzytkownik {// nie mozna utworzyc encji o nazwie User
+public class Trollo_users {// nie mozna utworzyc encji o nazwie User
     @Id
     @GeneratedValue
     private long id;
 
+    @Column(name = "CREATING_DATE")
     private java.sql.Date creatingDate;
+
+    @Column(name = "MODIFICATION_DATE")
     private java.sql.Date modificationDate;
+
+    @Column(name = "ID_CREATING_USER")
     private int idCreatingUser;
+
+    @Column(name = "ID_MOD_USER")
     private int idModUser;
     @Column(length = 50 )
     private String name; // varchar2(50)
@@ -23,7 +30,7 @@ public class Uzytkownik {// nie mozna utworzyc encji o nazwie User
     @Column(length = 150)
     private String email;
 
-    public Uzytkownik(Date creatingDate, Date modificationDate, int idCreatingUser, int idModUser, String name, String password, String email) {
+    public Trollo_users(Date creatingDate, Date modificationDate, int idCreatingUser, int idModUser, String name, String password, String email) {
         this.creatingDate = creatingDate;
         this.modificationDate = modificationDate;
         this.idCreatingUser = idCreatingUser;
@@ -33,7 +40,7 @@ public class Uzytkownik {// nie mozna utworzyc encji o nazwie User
         this.email = email;
     }
 
-    public Uzytkownik() {
+    public Trollo_users() {
     }
 
     public long getId() {
@@ -103,7 +110,7 @@ public class Uzytkownik {// nie mozna utworzyc encji o nazwie User
 
     @Override
     public String toString() {
-        return "Uzytkownik{" +
+        return "Trollo_users{" +
                 "id=" + id +
                 ", creatingDate=" + creatingDate +
                 ", modificationDate=" + modificationDate +
