@@ -11,6 +11,7 @@ import java.util.List;
 public interface BoardRepository {
     void createBoard(TrolloBoard trolloBoard, TrolloUsers trolloUsers);
     List<TrolloBoard> readAllBoard(TrolloUsers trolloUsers);
-    void update (long idBoard, TrolloBoard trolloBoard);
+    TrolloBoard readOneBoard (TrolloUsers trolloUsers, long idBoard);
+    void update (long idBoard, String titleBoard);
     void delete (long idBoard);
 }

@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -26,7 +27,7 @@ public class BoardController {
 
     BoardRepository boardRepository;
 
-    @RequestMapping(value = "Dashboard", method = RequestMethod.GET)
+    @RequestMapping(value = "/Dashboard", method = RequestMethod.GET)
     public String dashboard( HttpServletRequest request, Model model){
         HttpSession httpSession = request.getSession(true);
         TrolloUsers trolloUsers = (TrolloUsers) httpSession.getAttribute("User");
@@ -54,6 +55,32 @@ public class BoardController {
 
 
         return "redirect:/Dashboard";
+    }
+    @RequestMapping(value ="/Dashboard/editboard", method = RequestMethod.GET)
+    public String setAttributesBoardForEditing(@RequestParam("idBoard")String idBoard,HttpServletRequest request, Model model){
+        HttpSession httpSession=request.getSession(true);
+        TrolloUsers trolloUser = (TrolloUsers) httpSession.getAttribute("User");
+
+        boardRepository=new BoardRepositoryImpl();
+        TrolloBoard trolloBoard = boardRepository.readOneBoard(trolloUser,Long.parseLong(idBoard, 10));
+        model.addAttribute("idBoard", trolloBoard.getId());
+        model.addAttribute("title", trolloBoard.getTitle());
+
+        return "editboard";
+    }
+
+    @RequestMapping(value ="/Dashboard/editboard", method = RequestMethod.POST)
+    public String updateBoard(@ModelAttribute("editBoard") @Valid TrolloBoard editBoard, BindingResult result,
+                              HttpServletRequest request, Model model) {
+        HttpSession httpSession = request.getSession(true);
+        TrolloUsers trolloUser = (TrolloUsers) httpSession.getAttribute("User");
+
+
+        boardRepository = new BoardRepositoryImpl();
+        boardRepository.update(editBoard.getId(), editBoard.getTitle());
+        System.out.println(boardRepository.readOneBoard(trolloUser,editBoard.getId()).toString());
+        return "redirect:/Dashboard";
+
     }
 
 

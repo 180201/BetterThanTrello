@@ -1,10 +1,7 @@
 package com.packt.domain.repository.impl;
 
 
-import com.packt.domain.TrolloBoard;
 import com.packt.domain.TrolloUsers;
-
-import java.util.List;
 
 
 /**
@@ -21,11 +18,16 @@ public class Main {
         System.out.println(trolloUsers.toString());
         userRepository.finalize();
 
+        String title = new String("Inny tytul");
+        BoardRepositoryImpl boardRepository= new BoardRepositoryImpl();
+        boardRepository.update(23, title);
+        System.out.println(boardRepository.readOneBoard(trolloUsers,23).toString());
+        boardRepository.finalize();
 
-        BoardRepositoryImpl boardRepository = new BoardRepositoryImpl();
+        /*BoardRepositoryImpl boardRepository = new BoardRepositoryImpl();
         List<TrolloBoard> trolloBoardSet = boardRepository.readAllBoard(trolloUsers);
         System.out.println(trolloBoardSet.size());
-        boardRepository.finalize();
+        boardRepository.finalize();*/
 
      /*   EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("db");
         EntityManager entityManager = entityManagerFactory.createEntityManager();

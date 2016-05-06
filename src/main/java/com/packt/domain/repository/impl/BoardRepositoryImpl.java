@@ -3,11 +3,10 @@ package com.packt.domain.repository.impl;
 import com.packt.domain.TrolloBoard;
 import com.packt.domain.TrolloUsers;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -21,11 +20,14 @@ public class BoardRepositoryImpl implements BoardRepository {
         entityManagerFactory = Persistence.createEntityManagerFactory("db");
         entityManager=entityManagerFactory.createEntityManager();
     }
+
+    @Override
     protected void finalize() throws Throwable {
 
         entityManager.close();
         entityManagerFactory.close();
     }
+
     @Override
     public void createBoard(TrolloBoard trolloBoard, TrolloUsers trolloUsers) {
         trolloBoard.setTrolloUsers(trolloUsers);
@@ -50,9 +52,30 @@ public class BoardRepositoryImpl implements BoardRepository {
         return trolloBoards;
     }
 
+    @Override
+    public TrolloBoard readOneBoard(TrolloUsers trolloUsers, long idBoard) {
+        TrolloBoard trolloBoard;
+        TypedQuery<TrolloBoard> query = entityManager.createQuery("select b from TrolloBoard b where b.trolloUsers=:trolloUser and b.id=:idBoard",
+                TrolloBoard.class).setParameter("trolloUser",trolloUsers);
+        query.setParameter("idBoard",idBoard);
+
+        trolloBoard= query.getSingleResult();
+
+
+        return trolloBoard;
+    }
+
 
     @Override
-    public void update(long idBoard, TrolloBoard trolloBoard) {
+    public void update(long idBoard, String titleBoard) {
+        Date date = new Date(Calendar.getInstance().getTime().getTime());
+        entityManager.getTransaction().begin();
+        Query query = entityManager.createQuery("update TrolloBoard tb set tb.title=:titleBoard, tb.modificationDate=:date where tb.id=:idBoard ");
+        query.setParameter("titleBoard", titleBoard);
+        query.setParameter("idBoard", idBoard);
+        query.setParameter("date",date);
+        query.executeUpdate();
+        entityManager.getTransaction().commit();
 
 
     }

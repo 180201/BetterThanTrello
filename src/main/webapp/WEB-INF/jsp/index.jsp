@@ -11,6 +11,6 @@
     <title>Index</title>
 </head>
 <body>
-<%= session.getAttribute("User").toString() %>
+
 </body>
 </html>

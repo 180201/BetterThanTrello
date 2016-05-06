@@ -20,7 +20,7 @@
 <section>
     <div class="jumbotron">
         <div class="container">
-            <h1>Better Than Treollo Dashboard Page</h1>
+            <h1>Better Than Trollo Dashboard Page</h1>
 
         </div>
     </div>
@@ -32,6 +32,7 @@
                 <c:forEach items="${trolloBoards}" var="trolloBoard">
                 <div class="col-sm-6 col-md-3" style="padding-bottom: 15px">
                     <div class="thumbnail">
+                        <a href="/Dashboard/editboard?idBoard=${trolloBoard.id}" >Edit</a>
                         <div class="caption">
                             <h3>${trolloBoard.title}</h3>
                             <p>${trolloBoard.desccription}</p>
