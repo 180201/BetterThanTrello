@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 /**
@@ -27,6 +28,7 @@ public class LoginController {
     @RequestMapping(value="login/chceck" , method = RequestMethod.POST)
             public String checkUser (@ModelAttribute("user") @Valid TrolloUsers user, BindingResult result, HttpServletRequest request)
              {
+                 HttpSession httpSession=request.getSession(true);
                  userRepository = new UserRepositoryImpl();
                  boolean isValid;
                  System.out.println(user.getName()+" "+ user.getPassword());
@@ -40,7 +42,8 @@ public class LoginController {
               }
                  else {
 
-                  return "redirect:/index";
+                  httpSession.setAttribute("User", uzytkownik);
+                  return "redirect:/Dashboard";
               }
 
 

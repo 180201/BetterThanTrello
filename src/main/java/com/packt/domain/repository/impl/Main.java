@@ -1,13 +1,47 @@
 package com.packt.domain.repository.impl;
 
 
+import com.packt.domain.TrolloBoard;
+import com.packt.domain.TrolloUsers;
+
+import java.util.List;
+
+
 /**
  * Created by wp on 01.05.2016.
  */
 public class Main {
-    public static void main(String[] args) {
-       /* UserRepositoryImpl userRepository = new UserRepositoryImpl();
-        System.out.println(userRepository.read("TEST USER2").toString());
-        userRepository.create(new TrolloUsers());*/
+    public static void main(String[] args) throws Throwable {
+        UserRepositoryImpl userRepository = new UserRepositoryImpl();
+
+
+
+        TrolloUsers trolloUsers = userRepository.read("mateusz");
+        System.out.println(trolloUsers.getTrolloBoards().toString());
+        System.out.println(trolloUsers.toString());
+        userRepository.finalize();
+
+
+        BoardRepositoryImpl boardRepository = new BoardRepositoryImpl();
+        List<TrolloBoard> trolloBoardSet = boardRepository.readAllBoard(trolloUsers);
+        System.out.println(trolloBoardSet.size());
+        boardRepository.finalize();
+
+     /*   EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("db");
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        entityManager.getTransaction().begin();*/
+
+
+/*
+        entityManager.persist(new TrolloBoard(new Long("1"),new Long("1"),new Long("1"),
+                new Date(Calendar.getInstance().getTime().getTime()),
+                new Date(Calendar.getInstance().getTime().getTime()),"My Board","This is my Board",trolloUsers,new Long("123")));
+
+        entityManager.getTransaction().commit();
+        entityManager.close();
+        entityManagerFactory.close();*/
+      //  System.out.println(userRepository.read("mateusz").toString());
+       // userRepository.create(new TrolloUsers());
     }
 }

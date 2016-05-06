@@ -14,13 +14,13 @@ public class TrolloBoard {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private long id;
 
     @Column(name="ID_CREATING_USER")
-    private Long idCreatingUser;
+    private long idCreatingUser;
 
     @Column(name="ID_MOD_USER")
-    private Long idModUser;
+    private long idModUser;
 
     @Column(name="CREATING_DATE")
     private Date creatingDate;
@@ -35,16 +35,16 @@ public class TrolloBoard {
     private String desccription;
 
     @Column(name="PERMISSION_ID")
-    private Long permissionId;
+    private long permissionId;
 
-    @ManyToOne
-    @JoinColumn(name="TrolloUser_id")
-  //  @Column(name="USER_ID")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="USER_ID")
+   // @Column(name="USER_ID")
     private TrolloUsers trolloUsers;
 
-    private Long spot;
+    private long spot;
 
-    public TrolloBoard(Long permissionId, Long idCreatingUser, Long idModUser, Date creatingDate, Date modificationDate, String title, String desccription, TrolloUsers trolloUsers, Long spot) {
+    public TrolloBoard(long permissionId, long idCreatingUser, long idModUser, Date creatingDate, Date modificationDate, String title, String desccription, TrolloUsers trolloUsers, long spot) {
         this.permissionId = permissionId;
         this.idCreatingUser = idCreatingUser;
         this.idModUser = idModUser;
@@ -59,27 +59,27 @@ public class TrolloBoard {
     public TrolloBoard() {
     }
 
-    public Long getIdCreatingUser() {
+    public long getIdCreatingUser() {
         return idCreatingUser;
     }
 
-    public void setIdCreatingUser(Long idCreatingUser) {
+    public void setIdCreatingUser(long idCreatingUser) {
         this.idCreatingUser = idCreatingUser;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public Long getIdModUser() {
+    public long getIdModUser() {
         return idModUser;
     }
 
-    public void setIdModUser(Long idModUser) {
+    public void setIdModUser(long idModUser) {
         this.idModUser = idModUser;
     }
 
@@ -115,20 +115,20 @@ public class TrolloBoard {
         this.desccription = desccription;
     }
 
-    public Long getPermissionId() {
+    public long getPermissionId() {
         return permissionId;
     }
 
-    public void setPermissionId(Long permissionId) {
+    public void setPermissionId(long permissionId) {
         this.permissionId = permissionId;
     }
 
 
-    public Long getSpot() {
+    public long getSpot() {
         return spot;
     }
 
-    public void setSpot(Long spot) {
+    public void setSpot(long spot) {
         this.spot = spot;
     }
 

@@ -8,6 +8,6 @@ import com.packt.domain.TrolloUsers;
 public interface UserRepository {
     void create(TrolloUsers user);
     TrolloUsers read(String Login);
-    void update(long userId,TrolloUsers user);
+    void update (long userId, TrolloUsers user);
     void delete(long UserId);
 }

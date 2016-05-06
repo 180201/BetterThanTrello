@@ -13,7 +13,7 @@ import java.util.Set;
 public class TrolloUsers {// nie mozna utworzyc encji o nazwie User
     @Id
     @GeneratedValue
-    @Column(name="ID")
+    @Column(name="ID_USER")
     private long id;
 
     @Column(name = "CREATING_DATE")
@@ -34,7 +34,7 @@ public class TrolloUsers {// nie mozna utworzyc encji o nazwie User
     @Column(length = 150)
     private String email;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trolloUsers")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "trolloUsers", cascade = CascadeType.ALL)
     private Set<TrolloBoard> trolloBoards = new HashSet<TrolloBoard>(0);
 
     public TrolloUsers(Date creatingDate, Date modificationDate, int idCreatingUser, int idModUser, String name, String password, String email) {
