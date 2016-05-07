@@ -32,11 +32,13 @@ public class BoardController {
         HttpSession httpSession = request.getSession(true);
         TrolloUsers trolloUsers = (TrolloUsers) httpSession.getAttribute("User");
 
-        System.out.println(trolloUsers.toString());
         boardRepository = new BoardRepositoryImpl();
-        List<TrolloBoard> trolloBoards = boardRepository.readAllBoard(trolloUsers);
-        System.out.println(trolloBoards.size());
-        model.addAttribute("trolloBoards", trolloBoards);
+        if(boardRepository.readAllBoard(trolloUsers).size()!=0)
+        {
+            List<TrolloBoard> trolloBoards = boardRepository.readAllBoard(trolloUsers);
+            System.out.println(trolloBoards.size());
+            model.addAttribute("trolloBoards", trolloBoards);
+        }
         return "Dashboard";
     }
 
