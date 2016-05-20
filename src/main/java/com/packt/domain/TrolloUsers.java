@@ -37,6 +37,10 @@ public class TrolloUsers {// nie mozna utworzyc encji o nazwie User
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "trolloUsers", cascade = CascadeType.ALL)
     private Set<TrolloBoard> trolloBoards = new HashSet<TrolloBoard>(0);
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trolloUsersInColumn")
+    private Set<TrolloColumn> trolloColumns = new HashSet<TrolloColumn>(0);
+
+
     public TrolloUsers(Date creatingDate, Date modificationDate, int idCreatingUser, int idModUser, String name, String password, String email) {
         this.creatingDate = creatingDate;
         this.modificationDate = modificationDate;
@@ -121,6 +125,14 @@ public class TrolloUsers {// nie mozna utworzyc encji o nazwie User
 
     public void setTrolloBoards(Set<TrolloBoard> trolloBoards) {
         this.trolloBoards = trolloBoards;
+    }
+
+    public Set<TrolloColumn> getTrolloColumns() {
+        return trolloColumns;
+    }
+
+    public void setTrolloColumns(Set<TrolloColumn> trolloColumns) {
+        this.trolloColumns = trolloColumns;
     }
 
     @Override

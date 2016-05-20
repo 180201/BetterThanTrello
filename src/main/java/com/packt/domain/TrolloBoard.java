@@ -3,6 +3,9 @@ package com.packt.domain;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Winiu on 04-05-2016.
@@ -41,6 +44,9 @@ public class TrolloBoard {
     @JoinColumn(name="USER_ID")
    // @Column(name="USER_ID")
     private TrolloUsers trolloUsers;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trolloBoardoInColumn", cascade = CascadeType.ALL)
+    private Set<TrolloColumn> trolloColumns= new HashSet<TrolloColumn>(0);
 
     private long spot;
 
@@ -138,6 +144,14 @@ public class TrolloBoard {
 
     public void setTrolloUsers(TrolloUsers trolloUsers) {
         this.trolloUsers = trolloUsers;
+    }
+
+    public Set<TrolloColumn> getTrolloColumns() {
+        return trolloColumns;
+    }
+
+    public void setTrolloColumns(Set<TrolloColumn> trolloColumns) {
+        this.trolloColumns = trolloColumns;
     }
 
     @Override

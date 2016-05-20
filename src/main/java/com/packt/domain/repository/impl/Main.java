@@ -1,7 +1,11 @@
 package com.packt.domain.repository.impl;
 
 
+import com.packt.domain.TrolloBoard;
+import com.packt.domain.TrolloColumn;
 import com.packt.domain.TrolloUsers;
+
+import java.util.List;
 
 
 /**
@@ -21,8 +25,24 @@ public class Main {
         String title = new String("Inny tytul");
         BoardRepositoryImpl boardRepository= new BoardRepositoryImpl();
         boardRepository.update(23, title);
+        TrolloBoard trolloBoard = boardRepository.readOneBoard(trolloUsers,23);
         System.out.println(boardRepository.readOneBoard(trolloUsers,23).toString());
-        boardRepository.finalize();
+        ColumnRepositoryImpl columnRepository = new ColumnRepositoryImpl();
+       /* TrolloColumn trolloColumn= new TrolloColumn();
+        trolloColumn.setTitle("Nowa kolumna2");
+        trolloColumn.setCreatingDate(new Date(Calendar.getInstance().getTime().getTime()));
+        trolloColumn.setModyficationDate(new Date(Calendar.getInstance().getTime().getTime()));
+
+        columnRepository.createColumn(trolloBoard,trolloColumn,trolloUsers);*/
+
+        List<TrolloColumn> trolloColumns = columnRepository.readAllColumn(trolloBoard);
+        System.out.println(trolloColumns.size());
+        /*columnRepository.update(31,"NOWY LEPSZY TYTUL");
+        columnRepository.delete(31);*/
+        System.out.println(columnRepository.readOneColumn(trolloBoard,32L).toString());
+
+        /*columnRepository.finalize();
+        boardRepository.finalize();*/
 
         /*BoardRepositoryImpl boardRepository = new BoardRepositoryImpl();
         List<TrolloBoard> trolloBoardSet = boardRepository.readAllBoard(trolloUsers);

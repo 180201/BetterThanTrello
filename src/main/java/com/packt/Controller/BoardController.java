@@ -85,5 +85,29 @@ public class BoardController {
 
     }
 
+    @RequestMapping(value = "Dashboard/deleteboard", method = RequestMethod.GET)
+    public String setAttributeBoardForDelete(@RequestParam("idBoard")String idBoard,HttpServletRequest request, Model model){
+        HttpSession httpSession=request.getSession(true);
+        TrolloUsers trolloUser = (TrolloUsers) httpSession.getAttribute("User");
+
+        boardRepository=new BoardRepositoryImpl();
+        TrolloBoard trolloBoard = boardRepository.readOneBoard(trolloUser,Long.parseLong(idBoard, 10));
+        model.addAttribute("idBoard", trolloBoard.getId());
+        model.addAttribute("title", trolloBoard.getTitle());
+        return "deleteboard";
+    }
+
+    @RequestMapping(value = "/Dashboard/deleteboard",method = RequestMethod.DELETE)
+    public String deleteBoard(@ModelAttribute("deleteBoard") @Valid TrolloBoard deleteBoard, BindingResult result,
+                              HttpServletRequest request, Model model) {
+        HttpSession httpSession = request.getSession(true);
+        TrolloUsers trolloUser = (TrolloUsers) httpSession.getAttribute("User");
+
+
+        boardRepository = new BoardRepositoryImpl();
+        boardRepository.delete(deleteBoard.getId());
+        //System.out.println(boardRepository.readOneBoard(trolloUser, deleteBoard.getId()).toString());
+        return "redirect:/Dashboard";
+    }
 
 }

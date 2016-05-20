@@ -12,6 +12,7 @@ import java.util.List;
 /**
  * Created by Winiu on 05-05-2016.
  */
+
 public class BoardRepositoryImpl implements BoardRepository {
     private static EntityManagerFactory entityManagerFactory;
     private static EntityManager entityManager;
@@ -82,6 +83,11 @@ public class BoardRepositoryImpl implements BoardRepository {
 
     @Override
     public void delete(long idBoard) {
+        entityManager.getTransaction().begin();
+        Query query = entityManager.createQuery("delete from TrolloBoard tb where tb.id=:idBoard ");
+        query.setParameter("idBoard",idBoard);
+        query.executeUpdate();
+        entityManager.getTransaction().commit();
 
     }
 }
