@@ -13,7 +13,7 @@
 <section>
     <div class="jumbotron">
         <div class="container">
-            <h1>Better Than Trollo Login Page</h1>
+            <h1>Add task</h1>
 
         </div>
     </div>
@@ -22,21 +22,24 @@
     <div class="row">
         <div class="col-md-4 col-md-offset-4">
             <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Zaloguj się</h3>
-                </div>
+                <%--<div class="panel-heading">--%>
+                    <%--<h3 class="panel-title">Zaloguj się</h3>--%>
+                <%--</div>--%>
                 <div class="panel-body">
 
 
-                    <form:form method="post" action="login/chceck" commandName="user">
+                    <form:form method="post" action="add" commandName="Task">
                         <fieldset>
                             <div class="form-group">
-                                <input class="form-control" placeholder="Nazwa użytkownika" name='name' type="text">
+                                <input width="500px" height="300px" class="form-control" placeholder="title" name='title' type="text" >
                             </div>
                             <div class="form-group">
-                                <input class="form-control" placeholder="Hasło" name='password'  type="password" value="">
+                                <input  class="form-control" placeholder="description" name='description'  type="text" value="">
+                                <input class="form-control" placeholder="trolloColumn" name='trolloColumn'  type="hidden" value=${columnId}>
                             </div>
-                            <input class="btn btn-lg btn-success btn-block" type="submit" value="Zaloguj">
+                            <input class="btn btn-lg btn-success btn-block" type="submit" value="Add">
+
+
                         </fieldset>
                     </form:form>
                 </div>

@@ -17,6 +17,7 @@
     <title>Board</title>
 </head>
 <body>
+
 <section>
     <div class="jumbotron">
         <div class="container">
@@ -29,20 +30,39 @@
     <div class="container">
         <div class="row">
 
-            <c:forEach items="${columnList}" var="column">
-                <div class="col-sm-6 col-md-3" style="padding-bottom: 15px">
-                    <div class="thumbnail">
-                        <a href="/Dashboard/column/editcolumn?idColumn=${column.id}" >Edit</a>
-                        <a href="/Dashboard/column/deletecolumn?idColumn=${column.id}" >Delete</a>
+            <c:forEach items="${mapt}" var="mapkey">
+                <%--<div class="col-sm-6 col-md-3" style="padding-bottom: 15px">--%>
+                    <div  class="thumbnail">
+                        <a href="/Dashboard/column/editcolumn?idColumn=${mapkey.key.id}" >Edit</a>
+                        <a href="/Dashboard/column/deletecolumn?idColumn=${mapkey.key.id}" >Delete</a>
                         <div class="caption">
-                            <h3>${column.title}</h3>
+                            <h3> ${mapkey.key.title}</h3>
+
 
                         </div>
-                    </div>
-                </div>
+
+                            <c:if test="${mapkey.value.size()>0}">
+
+
+                            <c:forEach items= "${mapkey.value}" var="mapval">
+                        <table width="75%">
+                            <tr>
+                         <td width="50%"><a href="/Dashboard/column/Task?idTask=${mapval.id}" class="list-group-item"> ${mapval.title}</td>
+                         <td><a href="/Dashboard/column/Task/delete?idTask=${mapval.id}" class="btn btn-default btn-sm"> delete</td>
+                            </tr>
+                        </table>
+                        </c:forEach>
+
+                        </c:if>
+                        <a href="http://localhost:8080/Dashboard/column/Task/add?column=${mapkey.key.id}" class="btn btn-success">AddTask</a>
+
+
+
             </c:forEach>
 
-        </div>
+
+
+    </div>
 
         <div class="panel panel-default">
 
@@ -67,6 +87,8 @@
         </div>
     </div>
 </section>
+
+
 <%--<div class="container">
     <div class="row">
         <div class="col-md-4 col-md-offset-4">
@@ -93,6 +115,17 @@
             </div>
         </div>
     </div>--%>
-</div>
+
+<%--<c:forEach items="${mapt}" var="mapkey">--%>
+<%--<p>--%>
+    <%--${mapkey.key.title}--%>
+
+    <%--<c:forEach items= "${mapkey.value}" var="mapval">--%>
+
+        <%--${mapval.title}--%>
+    <%--</c:forEach>--%>
+<%--</p>--%>
+<%--</c:forEach>--%>
+
 </body>
 </html>

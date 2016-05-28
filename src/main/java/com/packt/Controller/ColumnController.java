@@ -1,12 +1,10 @@
 package com.packt.Controller;
 
+import com.packt.domain.Task;
 import com.packt.domain.TrolloBoard;
 import com.packt.domain.TrolloColumn;
 import com.packt.domain.TrolloUsers;
-import com.packt.domain.repository.impl.BoardRepository;
-import com.packt.domain.repository.impl.BoardRepositoryImpl;
-import com.packt.domain.repository.impl.ColumnRepository;
-import com.packt.domain.repository.impl.ColumnRepositoryImpl;
+import com.packt.domain.repository.impl.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,7 +18,9 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.sql.Date;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Winiu on 20-05-2016.
@@ -30,22 +30,40 @@ import java.util.List;
 public class ColumnController {
     ColumnRepository columnRepository;
     BoardRepository boardRepository;
+    TaskRepository taskRepository;
 
     @RequestMapping(value = "/column", method = RequestMethod.GET)
+
     public String columns(@RequestParam("idBoard")String idBoard, HttpServletRequest request, Model model){
         HttpSession httpSession=request.getSession(true);
         TrolloUsers trolloUser = (TrolloUsers) httpSession.getAttribute("User");
 
         columnRepository = new ColumnRepositoryImpl();
         boardRepository = new BoardRepositoryImpl();
+        taskRepository = new TaskRepositoryImpl();
+
         TrolloBoard trolloBoard =  boardRepository.readOneBoard(trolloUser,Long.parseLong(idBoard, 10));
 
          List<TrolloColumn> columnList = columnRepository.readAllColumn(trolloBoard);
+
+        Map<TrolloColumn,List<Task>> map = new HashMap<TrolloColumn, List<Task>>();
+
+
+        for (TrolloColumn column: columnList) {
+            List<Task> taskList = taskRepository.readAllTasks(column);
+           map.put(column,taskList);
+
+        }
+
         if(columnList!=null)
         {
-            model.addAttribute("columnList", columnList);
+            model.addAttribute("mapt",map);
             httpSession.setAttribute("board",trolloBoard );
         }
+
+
+
+
 
 
         return "column";
