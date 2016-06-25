@@ -1,13 +1,7 @@
 package com.packt.Controller;
 
-import com.packt.domain.Task;
-import com.packt.domain.TrolloBoard;
-import com.packt.domain.TrolloColumn;
-import com.packt.domain.TrolloUsers;
-import com.packt.domain.repository.impl.ColumnRepository;
-import com.packt.domain.repository.impl.ColumnRepositoryImpl;
-import com.packt.domain.repository.impl.TaskRepository;
-import com.packt.domain.repository.impl.TaskRepositoryImpl;
+import com.packt.domain.*;
+import com.packt.domain.repository.impl.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.persistence.Column;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * Created by wp on 22.05.2016.
@@ -31,10 +25,12 @@ public class TaskController {
 
     TaskRepository taskRepository;
     ColumnRepository columnRepository;
+    LabelRepository labelRepository;
     @RequestMapping(value = "/Task", method = RequestMethod.GET)
     public String Task(@RequestParam("idTask")String idTask, HttpServletRequest request, Model model){
 
         taskRepository = new TaskRepositoryImpl();
+        labelRepository = new LabelRepositoryImpl();
 
         HttpSession httpSession=request.getSession(true);
 
@@ -43,8 +39,13 @@ public class TaskController {
 
 
         Task task=taskRepository.readOneTask(Long.parseLong(idTask));
+        LabelRepository labelRepository = new LabelRepositoryImpl();
+        List<Label> labelList = labelRepository.readAllLabel(trolloBoard);
+        Label label= labelList.get(0);
 
-            model.addAttribute("task",task);
+        model.addAttribute("task",task);
+        model.addAttribute("labelList", labelList);
+       httpSession.setAttribute("task",task);
 
         return "TaskOwerview";
 
@@ -87,7 +88,7 @@ public class TaskController {
        String columnid= request.getParameter("columnid");
         TrolloUsers trolloUsers = (TrolloUsers) httpSession.getAttribute("User");
         TrolloBoard trolloBoard = (TrolloBoard) httpSession.getAttribute("board");
-
+        task.setOrderTask(99999l);
          TrolloColumn trollocolumn = columnRepository.readOneColumn(trolloBoard,Long.parseLong((String)httpSession.getAttribute("columnid")));
 
         taskRepository.createTask(trollocolumn,task,trolloUsers);

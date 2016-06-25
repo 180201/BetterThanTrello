@@ -1,12 +1,13 @@
 package com.packt.domain.repository.impl;
 
+import com.packt.domain.Label;
 import com.packt.domain.Task;
-import com.packt.domain.TrolloBoard;
 import com.packt.domain.TrolloColumn;
 import com.packt.domain.TrolloUsers;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -45,8 +46,7 @@ public class TaskRepositoryImpl implements TaskRepository  {
     @Override
     public List<Task> readAllTasks(TrolloColumn trolloColumn) {
 
-        List<Task> trolloTasks = new ArrayList<Task>();
-        TypedQuery<Task> query = entityManager.createQuery("Select tc from Task tc where tc.trolloColumn =:trolloColumn",
+        TypedQuery<Task> query = entityManager.createQuery("Select tc from Task tc where tc.trolloColumn =:trolloColumn order by orderTask",
                 Task.class).setParameter("trolloColumn",trolloColumn);
 
 
@@ -68,6 +68,17 @@ public class TaskRepositoryImpl implements TaskRepository  {
     }
 
     @Override
+    public void updateLabel(long idTask, Label label) {
+        entityManager.getTransaction().begin();
+        Query query = entityManager.createQuery("update Task tk set tk.labelInTask=:label " +
+                "where tk.id=:idTask");
+        query.setParameter("label", label);
+        query.setParameter("idTask", idTask);
+        query.executeUpdate();
+        entityManager.getTransaction().commit();
+    }
+
+    @Override
     public void delete(long idTask) {
 
         entityManager.getTransaction().begin();
@@ -75,6 +86,32 @@ public class TaskRepositoryImpl implements TaskRepository  {
         query.setParameter("idTask", idTask);
         query.executeUpdate();
         entityManager.getTransaction().commit();
+
+    }
+
+    @Override
+    public void updateOrder(String orderTask) {
+        TrolloColumn trolloColumn;
+        PositionsTasksAndColumns positionsTasksAndColumns = new PositionsTasksAndColumns();
+        List<PositionsTasksAndColumns.OrderTasks> listOrderTasks = positionsTasksAndColumns.generateOrderTasks(orderTask);
+        for (int i=0;i<listOrderTasks.size();i++)
+        {
+            Date date = new Date(Calendar.getInstance().getTime().getTime());
+            entityManager.getTransaction().begin();
+            Query queryColumn = entityManager.createQuery("select tc from TrolloColumn tc  where " +
+                    "tc.id=:idColumn ", TrolloColumn.class).setParameter("idColumn", listOrderTasks.get(i).getIdColumn());
+            trolloColumn= (TrolloColumn) queryColumn.getSingleResult();
+
+            Query query = entityManager.createQuery("UPDATE Task tk set tk.orderTask=:orderTask, tk.modyficationDate=:date, tk.trolloColumn=:trolloColumn " +
+                    "where tk.id=:idTask");
+            query.setParameter("orderTask", Long.parseLong(Integer.toString(i),10));
+            query.setParameter("date",date);
+            query.setParameter("trolloColumn",trolloColumn);
+            query.setParameter("idTask", listOrderTasks.get(i).getIdTask());
+            query.executeUpdate();
+            entityManager.getTransaction().commit();
+
+        }
 
     }
 }

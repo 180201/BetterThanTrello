@@ -13,11 +13,67 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <link rel="stylesheet"	href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet"  href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
     <title>Board</title>
 </head>
 <body>
+<style>
+    .container li { margin: 5px; padding: 5px; border-style: ridge; }
+     .dragAndDropTask { min-height: 40px;}
+    .container ul {list-style:none;}
+    .liColumn{float:left;}
 
+</style>
+<script type="text/javascript">
+
+    $( init );
+
+    function init() {
+        $("#sortableColumn").sortable({
+            revert: true,
+            stop: function(event, ui) {
+                let columns = [];
+                $('.liColumn').each(function(){
+                    columns.push(this.id);
+                });
+                console.log(columns);
+                $.ajax({
+                    type : "Get",
+                    url : "/Dashboard/column/orderColumns",
+                    data:"&orderColumns="+columns
+                });
+                //TUTAJ WYWOLASZ METODE Z KONTROLERA sortujaca kolumny
+                // columns < TO DASZ JAKO PARAMETR < TO JEST KOLEJOSC KOLUMN
+            }
+        });
+
+        $("ul.dragAndDropTask").sortable({ // nie dziala przenoszenie miedzy kolumanmi bo nie wiem jak to zrobic w tym forze i nie chce mi sie kombinowac
+            revert: true,
+            connectWith : "ul.dragAndDropTask",
+            activate: function( event, ui ) {
+
+            },
+            stop: function(event, ui) {
+                let tasks = [];
+                let parent;
+                $('.liTask').each(function(){
+                    tasks.push($(this).parent().parent().attr('id')+':'+this.id);
+                });
+                console.log(tasks);
+                $.ajax({
+                    type : "Get",
+                    url : "/Dashboard/column/orderTasks",
+                    data:"&orderTasks="+tasks
+                });
+                //TUTAJ WYWOLASZ METODE Z KONTROLERA sortujaca taski
+                // tasks < TO DASZ JAKO PARAMETR < TO JEST KOLEJOSC tasków, a biorac pod uwage ze parent nam sie nie zmienia to jebac go masz to info w bazie
+            }
+        });
+    }
+
+</script>
 <section>
     <div class="jumbotron">
         <div class="container">
@@ -29,56 +85,52 @@
 <section>
     <div class="container">
         <div class="row">
-
-            <c:forEach items="${mapt}" var="mapkey">
-                <%--<div class="col-sm-6 col-md-3" style="padding-bottom: 15px">--%>
-                    <div  class="thumbnail">
+            <div id="sortableColumn">
+                <c:forEach items="${mapt}" var="mapkey">
+                    <li id="${mapkey.key.id}" class="liColumn thumbnail">
                         <a href="/Dashboard/column/editcolumn?idColumn=${mapkey.key.id}" >Edit</a>
                         <a href="/Dashboard/column/deletecolumn?idColumn=${mapkey.key.id}" >Delete</a>
-                        <div class="caption">
-                            <h3> ${mapkey.key.title}</h3>
+                            ${mapkey.key.title}
 
 
-                        </div>
+                            <ul id="sortableTask" class="dragAndDropTask">
+                                <c:if test="${mapkey.value.size()>0}">
+                                <c:forEach items= "${mapkey.value}" var="mapval">
+                                    <li id="${mapval.id}" class="liTask noChange">
+                                        <a href="/Dashboard/column/Task?idTask=${mapval.id}"> ${mapval.title} </a>
+                                        <a href="/Dashboard/column/Task/delete?idTask=${mapval.id}" class="btn btn-default btn-sm"> delete </a>
+                                        <br/>
+                                        <br/>
+                                        <div style="height: 10px; width:25%; background-color:${mapval.labelInTask.color}">
 
-                            <c:if test="${mapkey.value.size()>0}">
+                                        </div>
+                                    </li>
+                                </c:forEach>
+                                </c:if>
+                            </ul>
 
 
-                            <c:forEach items= "${mapkey.value}" var="mapval">
-                        <table width="75%">
-                            <tr>
-                         <td width="50%"><a href="/Dashboard/column/Task?idTask=${mapval.id}" class="list-group-item"> ${mapval.title}</td>
-                         <td><a href="/Dashboard/column/Task/delete?idTask=${mapval.id}" class="btn btn-default btn-sm"> delete</td>
-                            </tr>
-                        </table>
-                        </c:forEach>
 
-                        </c:if>
                         <a href="http://localhost:8080/Dashboard/column/Task/add?column=${mapkey.key.id}" class="btn btn-success">AddTask</a>
+                    </li>
+
+                </c:forEach>
 
 
-
-            </c:forEach>
-
+            </div>
 
 
-    </div>
-
-        <div class="panel panel-default">
 
             <div class="col-md-4 col-md-offset-4">
                 <div class="panel-heading">
                     <h3 class="panel-title">Utworz nowa kolumne</h3>
                 </div>
                 <div class="panel-body">
-
-
                     <form:form method="post" action="column/add" commandName="newColumn">
                         <fieldset>
                             <div class="form-group">
                                 <input class="form-control" placeholder="Nazwa kolumny" name='title' type="text">
                             </div>
-
                             <input class="btn btn-lg btn-success btn-block" type="submit" value="Utworz">
                         </fieldset>
                     </form:form>
@@ -87,45 +139,10 @@
         </div>
     </div>
 </section>
+<section>
 
+</section>
 
-<%--<div class="container">
-    <div class="row">
-        <div class="col-md-4 col-md-offset-4">
-
-            <div class="panel panel-default">
-
-
-                <div class="panel-heading">
-                    <h3 class="panel-title">Utworz nowa tablice</h3>
-                </div>
-                <div class="panel-body">
-
-
-                    <form:form method="post" action="Dashboard/add" commandName="newBoard">
-                        <fieldset>
-                            <div class="form-group">
-                                <input class="form-control" placeholder="Nazwa tablicy" name='title' type="text">
-                            </div>
-
-                            <input class="btn btn-lg btn-success btn-block" type="submit" value="Utworz">
-                        </fieldset>
-                    </form:form>
-                </div>
-            </div>
-        </div>
-    </div>--%>
-
-<%--<c:forEach items="${mapt}" var="mapkey">--%>
-<%--<p>--%>
-    <%--${mapkey.key.title}--%>
-
-    <%--<c:forEach items= "${mapkey.value}" var="mapval">--%>
-
-        <%--${mapval.title}--%>
-    <%--</c:forEach>--%>
-<%--</p>--%>
-<%--</c:forEach>--%>
 
 </body>
 </html>

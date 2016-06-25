@@ -30,8 +30,9 @@ public class TrolloColumn {
 
     private String title;
 
-
     private String description;
+
+    private long orderColumn;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="BOARD_ID")
@@ -139,6 +140,14 @@ public class TrolloColumn {
 
     public void setTrolloBoardoInColumn(TrolloBoard trolloBoardoInColumn) {
         this.trolloBoardoInColumn = trolloBoardoInColumn;
+    }
+
+    public long getOrderColumn() {
+        return orderColumn;
+    }
+
+    public void setOrderColumn(long orderColumn) {
+        this.orderColumn = orderColumn;
     }
 
     @Override

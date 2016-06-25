@@ -1,11 +1,11 @@
 package com.packt.domain.repository.impl;
 
-import com.packt.domain.TrolloBoard;
+import com.packt.domain.Label;
+import com.packt.domain.Task;
 import com.packt.domain.TrolloColumn;
 import com.packt.domain.TrolloUsers;
 
 import java.util.List;
-import  com.packt.domain.Task;
 /**
  * Created by wp on 22.05.2016.
  */
@@ -16,5 +16,7 @@ public interface TaskRepository {
     List<Task> readAllTasks(TrolloColumn trolloColumn);
     public Task readOneTask(long idTask);
     void update (long idTask, String titleTask);
+    void updateLabel(long idTask, Label label);
     void delete (long idTask);
+    void updateOrder(String orderTask);
 }

@@ -8,19 +8,13 @@ import com.packt.domain.repository.impl.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.sql.Date;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Winiu on 20-05-2016.
@@ -46,7 +40,7 @@ public class ColumnController {
 
          List<TrolloColumn> columnList = columnRepository.readAllColumn(trolloBoard);
 
-        Map<TrolloColumn,List<Task>> map = new HashMap<TrolloColumn, List<Task>>();
+        Map<TrolloColumn,List<Task>> map = new LinkedHashMap<TrolloColumn, List<Task>>();
 
 
         for (TrolloColumn column: columnList) {
@@ -69,6 +63,20 @@ public class ColumnController {
         return "column";
     }
 
+    @RequestMapping(value = "/column/orderColumns", method = RequestMethod.GET)
+    public @ResponseBody String setOrderColumn(@RequestParam(value = "orderColumns") String orderColumn){
+        columnRepository.updateOrder(orderColumn);
+        System.out.println("Columns Request "+ orderColumn);
+        return null;
+    }
+
+    @RequestMapping(value = "/column/orderTasks", method = RequestMethod.GET)
+    public @ResponseBody String setOrderTasks(@RequestParam(value = "orderTasks") String orderTasks){
+        System.out.println("Tasks Request "+ orderTasks);
+        taskRepository.updateOrder(orderTasks);
+        return null;
+    }
+
     @RequestMapping(value = "/column/add", method = RequestMethod.POST)
     public String addColumn(@ModelAttribute("newColumn") @Valid TrolloColumn newColumn, BindingResult result,
                             HttpServletRequest request, Model model){
@@ -81,6 +89,7 @@ public class ColumnController {
 
         newColumn.setCreatingDate(new Date(Calendar.getInstance().getTime().getTime()));
         newColumn.setModyficationDate(new Date(Calendar.getInstance().getTime().getTime()));
+        newColumn.setOrderColumn(9999l);
         columnRepository.createColumn(trolloBoard,newColumn,trolloUsers);
         return new String("redirect:/Dashboard/column?idBoard="+trolloBoard.getId()) ;
     }

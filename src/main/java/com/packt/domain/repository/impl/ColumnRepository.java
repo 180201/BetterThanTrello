@@ -13,6 +13,8 @@ public interface ColumnRepository {
     void createColumn(TrolloBoard trolloBoard, TrolloColumn trolloColumn, TrolloUsers trolloUsers);
     List<TrolloColumn> readAllColumn(TrolloBoard trolloBoard);
     TrolloColumn readOneColumn (TrolloBoard trolloBoard, long idColumn);
+    TrolloColumn readOneColumn (long idColumn);
     void update (long idColumn, String titleColumn);
     void delete (long idColumn);
+    void updateOrder (String orderList);
 }

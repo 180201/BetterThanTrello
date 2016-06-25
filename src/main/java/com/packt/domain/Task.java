@@ -31,6 +31,8 @@ public class Task {
 
     private String description;
 
+    private long orderTask;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BOARD_ID")
     private TrolloBoard trolloBoard;
@@ -41,6 +43,12 @@ public class Task {
 
     @Column(name = "PERMISSION_ID")
     private long permissionId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="ID_LABEL")
+    private Label labelInTask;
+
+
 
     public Task() {
     }
@@ -152,5 +160,21 @@ public class Task {
 
     public void setPermissionId(long permissionId) {
         this.permissionId = permissionId;
+    }
+
+    public long getOrderTask() {
+        return orderTask;
+    }
+
+    public void setOrderTask(long orderTask) {
+        this.orderTask = orderTask;
+    }
+
+    public Label getLabelInTask() {
+        return labelInTask;
+    }
+
+    public void setLabelInTask(Label labelInTask) {
+        this.labelInTask = labelInTask;
     }
 }

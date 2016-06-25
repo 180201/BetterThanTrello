@@ -3,6 +3,7 @@ package com.packt.domain;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -47,6 +48,9 @@ public class TrolloBoard {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "trolloBoardoInColumn", cascade = CascadeType.ALL)
     private Set<TrolloColumn> trolloColumns= new HashSet<TrolloColumn>(0);
+
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL, mappedBy = "trolloBoardInLabel")
+    private Set<Label> trolloLabel = new HashSet<Label>(0);
 
     private long spot;
 
